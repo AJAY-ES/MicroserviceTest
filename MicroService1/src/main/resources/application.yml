@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: MicroService1
+  boot:
+    admin:
+      client:
+        url: http://localhost:3333
+  config:
+    import: optional:configserver:http://localhost:1111

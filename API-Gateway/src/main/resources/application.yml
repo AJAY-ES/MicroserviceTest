@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: API-Gateway
+  boot:
+    admin:
+      client:
+        url: http://localhost:3333
+  cloud:
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+              lower-case-service-id: true
+          routes:
+            - id: microservice1
+              uri: lb://microservice1
+              predicates:
+                - Path=/micro1/**
+            - id: microservice2
+              uri: lb://microservice2
+              predicates:
+                - Path=/micro2/**
+
+#        - id: product-service
+#          uri: lb://product-service
+#          predicates:
+#            - Path=/products/**
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus
+
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

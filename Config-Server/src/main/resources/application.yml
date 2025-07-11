@@ -1,0 +1,25 @@
+
+server:
+  port: 1111
+
+spring:
+  application:
+    name: Config-Server
+  boot:
+    admin:
+      client:
+        url: http://localhost:3333
+  profiles:
+    active: native  # use file-based config
+
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:\Users\LENOVO\OneDrive\Desktop\Zero\Shopsphere\Configuration-Properties
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
