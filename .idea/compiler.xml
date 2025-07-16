@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -10,6 +11,7 @@
         <module name="Admin-Server" />
         <module name="Config-Server" />
         <module name="Service-Registry" />
+        <module name="User-Service" />
       </profile>
       <profile name="Annotation profile for MicroService2" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -35,6 +37,7 @@
       <module name="MicroService2" options="-parameters" />
       <module name="Service-Registry" options="-parameters" />
       <module name="ServiceRegistry" options="-parameters" />
+      <module name="User-Service" options="-parameters" />
     </option>
   </component>
 </project>

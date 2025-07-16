@@ -1,4 +1,3 @@
-
 server:
   port: 1111
 
@@ -10,13 +9,13 @@ spring:
       client:
         url: http://localhost:3333
   profiles:
-    active: native  # use file-based config
+    active: native
 
   cloud:
     config:
       server:
         native:
-          search-locations: file:///C:\Users\LENOVO\OneDrive\Desktop\Zero\Shopsphere\Configuration-Properties
+          search-locations: file:/home/saasvaap/Desktop/Microservice project/MicroserviceTest/Configuration-Properties
 
 management:
   endpoints:
