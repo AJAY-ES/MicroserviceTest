@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8082
 
 spring:
   application:
@@ -7,10 +7,10 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:3333
+        url: http://admin-server:3333
 
   zipkin:
-    base-url: http://localhost:9411
+    base-url: http://zipkin:9411
     enabled: true
 
 management:
@@ -37,4 +37,4 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://service-registry:8761/eureka

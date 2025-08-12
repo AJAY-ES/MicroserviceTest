@@ -11,14 +11,24 @@
         <module name="Config-Server" />
         <module name="Service-Registry" />
       </profile>
-      <profile name="Annotation profile for MicroService2" enabled="true">
+      <profile name="Annotation profile for MicroService1" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.26/lombok-1.18.26.jar" />
+        </processorPath>
+        <module name="MicroService1" />
+      </profile>
+      <profile name="Annotation profile for NotificationService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="MicroService1" />
+        <module name="OrderService" />
+        <module name="NotificationService" />
         <module name="MicroService2" />
       </profile>
     </annotationProcessing>
@@ -33,6 +43,8 @@
       <module name="Config-Server" options="-parameters" />
       <module name="MicroService1" options="-parameters" />
       <module name="MicroService2" options="-parameters" />
+      <module name="NotificationService" options="-parameters" />
+      <module name="OrderService" options="-parameters" />
       <module name="Service-Registry" options="-parameters" />
       <module name="ServiceRegistry" options="-parameters" />
     </option>

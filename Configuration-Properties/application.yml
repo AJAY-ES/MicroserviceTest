@@ -9,8 +9,7 @@ spring:
     admin:
       client:
         url: http://admin-server:3333
-  profiles:
-    active: native  # use file-based config
+   # use file-based config
 
   cloud:
     config:
