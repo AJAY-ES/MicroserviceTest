@@ -36,6 +36,49 @@ services:
     networks:
       - backend
 
+  elasticsearch:
+    image: elasticsearch:8.17.1
+    container_name: elasticsearch
+    restart: always
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data/
+    environment:
+      - xpack.security.enabled=false  # Disable security for local development
+      - ES_JAVA_OPTS=-Xmx256m -Xms256m
+      - discovery.type=single-node
+    ports:
+      - '9200:9200'
+    networks:
+      - backend
+
+  logstash:
+    image: logstash:8.17.1
+    container_name: logstash
+    restart: always
+    volumes:
+      - ./logstash/:/logstash_dir
+    command: logstash -f /logstash_dir/pipeline/logstash.conf
+    depends_on:
+      - elasticsearch
+    ports:
+      - '5044:5044'
+    environment:
+      - LS_JAVA_OPTS=-Xmx256m -Xms256m
+    networks:
+      - backend
+
+  kibana:
+    image: kibana:8.17.1
+    container_name: kibana
+    restart: always
+    ports:
+      - '5601:5601'
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - backend
   ## 🔍 ZIPKIN ###
   zipkin:
     image: openzipkin/zipkin
@@ -207,20 +250,21 @@ services:
     networks:
       - backend
 
-
-  ## 🔄 MICROSERVICE 1 ###
-  microservice1:
+  product:
     build:
-      context: ./MicroService1
+      context: ./Product
       dockerfile: Dockerfile
-    container_name: microservice1
+    container_name: product
     ports:
-      - "8081:8081"
+      - "8083:8083"
     environment:
       - SPRING_PROFILES_ACTIVE=default
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=productsdb
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8083/actuator/health" ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -242,21 +286,18 @@ services:
         condition: service_healthy
     networks:
       - backend
-
-
-  ### 🔄 MICROSERVICE 2 ###
-  microservice2:
+  user:
     build:
-      context: ./MicroService2
+      context: ./User
       dockerfile: Dockerfile
-    container_name: microservice2
+    container_name: user
     ports:
-      - "8082:8082"
+      - "8086:8086"
     environment:
       - SPRING_PROFILES_ACTIVE=default
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8086/actuator/health" ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -278,13 +319,177 @@ services:
         condition: service_healthy
     networks:
       - backend
-
-
+  order:
+    build:
+      context: ./Order
+      dockerfile: Dockerfile
+    container_name: order
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8087/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      admin-server:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    networks:
+      - backend
+  inventory:
+    build:
+      context: ./Inventory
+      dockerfile: Dockerfile
+    container_name: inventory
+    ports:
+      - "8088:8088"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8088/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      admin-server:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    networks:
+      - backend
+  payment:
+    build:
+      context: ./Payment
+      dockerfile: Dockerfile
+    container_name: payment
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8089/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      admin-server:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    networks:
+      - backend
+  notification:
+    build:
+      context: ./Notification
+      dockerfile: Dockerfile
+    container_name: notification
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8090/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      admin-server:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    networks:
+      - backend
+  cart:
+    build:
+      context: ./Cart
+      dockerfile: Dockerfile
+    container_name: cart
+    ports:
+      - "8091:8091"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8091/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      admin-server:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    networks:
+      - backend
 networks:
   backend:
     driver: bridge
 
 volumes:
+  elastic_data: {}
   mysql-data:
   mongo-data:
   kafka-data:

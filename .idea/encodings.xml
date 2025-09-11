@@ -3,13 +3,24 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/API-Gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Admin-Server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Cart/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Config-Server/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Inventory/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroService1/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/MicroService2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Notification/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/NotificationService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Order/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/OrderService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Payment/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Product/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Recommendation/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Review/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Service-Registry/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ServiceRegistry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Shipping/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/User-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/User/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WishList/src/main/java" charset="UTF-8" />
   </component>
 </project>

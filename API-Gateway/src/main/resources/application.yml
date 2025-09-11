@@ -26,20 +26,10 @@ spring:
               uri: lb://microservice2
               predicates:
                 - Path=/micro2/**
-            - id: order-service
-              uri: lb://order-service
+            - id: product
+              uri: lb://product
               predicates:
-                - Path=/orders/**
-            - id: notification-service
-              uri: lb://notification-service
-              predicates:
-                - Path=/notifications/**
-
-
-#        - id: product-service
-#          uri: lb://product-service
-#          predicates:
-#            - Path=/products/**
+                - Path=/api/product/**
 
 eureka:
   client:
