@@ -25,7 +25,12 @@ public class ProductController {
     @GetMapping("/test")
     public String test() {
         log.info("testing logzz");
-        return "Welcome world";
+        return "Welcome world!";
+    }
+    @GetMapping("/testError")
+    public String testError() {
+        log.error("testing logzz,error!");
+        return "Welcome world!Error";
     }
 
     @PostMapping

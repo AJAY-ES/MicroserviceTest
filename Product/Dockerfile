@@ -1,14 +1,15 @@
-# Use OpenJDK 17 as the base image
-FROM openjdk:21-jdk-slim
-
-# Set the working directory
+# Build stage
+FROM openjdk:21-jdk-slim AS build
+RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the JAR file into the container
-COPY target/*.jar app.jar
+# Runtime stage: slim OpenJDK JRE (not full JDK)
+FROM eclipse-temurin:21-jre
 
-# Expose the port the app runs on
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8083
 
-# Command to run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
